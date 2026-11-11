@@ -201,13 +201,120 @@
   .actions button:hover { transform: translateY(-2px); }
   .actions button:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
   .actions button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .actions button.view { border-color: var(--ink); color: var(--ink); }
   #reply { min-height: 1.5em; margin: 14px 0 0; font-weight: 500; }
 
+  /* ---------- Your ticket (pops up after "I’m in") ---------- */
+  .tk-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    overflow: auto;
+    display: grid;
+    place-items: center;
+    padding: calc(20px + env(safe-area-inset-top, 0px)) 16px calc(20px + env(safe-area-inset-bottom, 0px));
+    background: rgba(25, 3, 8, .86);
+  }
+  .tk-wrap {
+    width: 100%;
+    max-width: 360px;
+    color: var(--paper);
+    outline: none;
+    animation: tkIn .6s cubic-bezier(.2, .9, .3, 1.15) both;
+  }
+  .tk-step { display: flex; flex-direction: column; gap: 14px; }
+  .tk-step.print { animation: tkPrint .9s cubic-bezier(.2, .9, .3, 1.1) both; }
+  @keyframes tkIn {
+    from { opacity: 0; transform: translateY(30px) scale(.96); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes tkPrint {
+    from { opacity: 0; transform: translateY(-70px) rotate(3deg) scale(.94); }
+    to   { opacity: 1; transform: none; }
+  }
+  .tk-hello { margin: 0; text-align: center; font-weight: 700; font-size: 1.2rem; overflow-wrap: anywhere; }
+  .tk-saved { margin: 0; min-height: 1.3em; text-align: center; font-size: .92rem; opacity: .9; }
+  .tk-error { margin: -6px 0 0; min-height: 1.3em; font-size: .92rem; font-weight: 500; color: #ffd0d0; }
+
+  .tk { filter: drop-shadow(0 14px 22px rgba(0, 0, 0, .5)); }
+  .tk-top, .tk-bottom { background: var(--paper); color: var(--ink); padding-left: 24px; padding-right: 24px; }
+  .tk-top {
+    border-radius: 16px 16px 0 0;
+    padding-top: 18px;
+    padding-bottom: 24px;
+    -webkit-mask:
+      radial-gradient(circle 13px at 0 100%, #0000 97%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 13px at 100% 100%, #0000 97%, #000) right / 51% 100% no-repeat;
+    mask:
+      radial-gradient(circle 13px at 0 100%, #0000 97%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 13px at 100% 100%, #0000 97%, #000) right / 51% 100% no-repeat;
+  }
+  .tk .marquee { margin-bottom: 14px; }
+  .tk .marquee li { width: 8px; height: 8px; }
+  .tk-admit { margin: 0; font-weight: 700; font-size: .95rem; }
+  .tk h2 {
+    margin: 2px 0 12px;
+    font-family: "Limelight", Georgia, serif;
+    font-weight: 400;
+    font-size: 2.7rem;
+    line-height: 1;
+    color: var(--accent);
+    text-shadow: 2px 2px 0 rgba(74, 15, 24, .18);
+  }
+  .tk-name {
+    margin: 0 0 14px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid var(--ink);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+  .tk-movie { margin: 0 0 12px; font-weight: 700; font-size: 1.1rem; }
+  .tk dl { border-top: 0; padding-top: 0; gap: 8px 14px; font-size: .95rem; }
+
+  .tk-bottom {
+    position: relative;
+    border-radius: 0 0 16px 16px;
+    padding-top: 24px;
+    padding-bottom: 20px;
+    -webkit-mask:
+      radial-gradient(circle 13px at 0 0, #0000 97%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 13px at 100% 0, #0000 97%, #000) right / 51% 100% no-repeat;
+    mask:
+      radial-gradient(circle 13px at 0 0, #0000 97%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 13px at 100% 0, #0000 97%, #000) right / 51% 100% no-repeat;
+  }
+  .tk-bottom::before { content: ""; position: absolute; top: 0; left: 20px; right: 20px; border-top: 2px dashed var(--ink); opacity: .55; }
+  .tk-seat { margin: 0; font-size: 1.35rem; font-weight: 700; }
+  .tk-no { margin: 2px 0 12px; font-weight: 500; }
+  .tk-bars { display: block; width: 100%; height: 56px; }
+
+  .tk-field { display: flex; flex-direction: column; gap: 6px; font-weight: 500; }
+  .tk-field input {
+    font: inherit; font-size: 1rem;
+    padding: 12px 14px; border-radius: 12px;
+    border: 2px solid var(--paper);
+    background: var(--paper); color: var(--ink);
+  }
+  .tk-field input:focus-visible { outline: 3px solid var(--bulb); outline-offset: 2px; }
+  .tk-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tk-btn {
+    flex: 1 1 auto;
+    font: inherit; font-weight: 700; cursor: pointer;
+    padding: 12px 18px; border-radius: 999px;
+    border: 2px solid var(--paper);
+    background: var(--paper); color: var(--ink);
+  }
+  .tk-btn.alt { background: transparent; color: var(--paper); }
+  .tk-btn:hover { transform: translateY(-2px); }
+  .tk-btn:focus-visible { outline: 3px solid var(--bulb); outline-offset: 3px; }
+
   @media (prefers-reduced-motion: reduce) {
-    .marquee li, .ticket { animation: none; }
+    .marquee li, .ticket, .tk-wrap, .tk-step.print { animation: none; }
     .curtain { transition-duration: .4s; }
     button { transition: none; }
-    button:hover { transform: none; }
+    button:hover, .tk-btn:hover { transform: none; }
   }
 </style>
 </head>
@@ -251,10 +358,10 @@
       <p class="film">We’re watching <strong>Shin Godzilla</strong>. You may bring snacks or js eat before comin</p>
 
       <dl>
-        <!-- EDIT: date, time, place, extras -->
-        <dt>When</dt><dd>Thursday October 22nd<br>Movie at 1:50</dd>
-        <dt>Where</dt><dd>Risang’s place, JL Tirta Akasa, The Green Harmony Villa<br>Mom Room</dd>
-        <dt>Bring</dt><dd>Anything as long as their not overworking a move night</dd>
+        <!-- EDIT: date, time, place, extras (the guest’s ticket copies the When and Where lines) -->
+        <dt>When</dt><dd id="whenDd">Thursday October 22nd<br>Movie at 1:50</dd>
+        <dt>Where</dt><dd id="whereDd">Risang’s place, JL Tirta Akasa, The Green Harmony Villa<br>Mom Room</dd>
+        <dt>Bring</dt><dd>Anything as long as their not overworking a movie night</dd>
         <dt>Please</dt><dd>Dont forget anything at my damn house</dd>
       </dl>
     </section>
@@ -262,12 +369,64 @@
     <section class="stub">
       <p>Let Risang know if you can make it:</p>
       <div class="actions">
-        <button class="yes" type="button" data-msg="Great, your seat is saved. See you Friday!">I’m in</button>
-        <button type="button" data-msg="Thanks for letting us know. We’ll miss you!">Can’t make it</button>
+        <button class="yes" type="button" data-msg="Great, your seat is saved. See you Thursday!">I’m in</button>
+        <button class="no" type="button" data-msg="Thanks for letting us know. We’ll miss you!">Can’t make it</button>
+        <button class="view" id="viewTicketBtn" type="button" hidden>Get my ticket</button>
       </div>
       <p id="reply" role="status" aria-live="polite"></p>
     </section>
   </main>
+
+  <!-- Your ticket: pops up after "I’m in" -->
+  <div class="tk-overlay" id="tkOverlay" role="dialog" aria-modal="true" aria-label="Your ticket" hidden>
+    <div class="tk-wrap" id="tkWrap" tabindex="-1">
+
+      <!-- Step 1: ask for a name -->
+      <form class="tk-step" id="tkAsk" novalidate>
+        <p class="tk-hello">You’re in! Who’s coming?</p>
+        <label class="tk-field" for="tkNameInput">
+          Your name
+          <input id="tkNameInput" type="text" maxlength="24" placeholder="Type your name" autocomplete="name">
+        </label>
+        <p class="tk-error" id="tkError" role="alert"></p>
+        <div class="tk-actions">
+          <button class="tk-btn" type="submit">Get my ticket</button>
+          <button class="tk-btn alt" id="tkCancel" type="button">Not now</button>
+        </div>
+      </form>
+
+      <!-- Step 2: the ticket, handed over and downloaded -->
+      <div class="tk-step" id="tkTicketStep" hidden>
+        <p class="tk-hello" id="tkHello">Here’s your ticket!</p>
+
+        <div class="tk">
+          <div class="tk-top">
+            <ul class="marquee" aria-hidden="true">
+              <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+            </ul>
+            <p class="tk-admit">Admit one</p>
+            <h2>Movie Night</h2>
+            <p class="tk-name" id="tkName">Guest</p>
+            <p class="tk-movie" id="tkMovie"></p>
+            <dl id="tkDetails"></dl>
+          </div>
+          <div class="tk-bottom">
+            <p class="tk-seat" id="tkSeat"></p>
+            <p class="tk-no" id="tkNo"></p>
+            <svg class="tk-bars" id="tkBars" viewBox="0 0 200 50" preserveAspectRatio="none" aria-hidden="true"></svg>
+          </div>
+        </div>
+
+        <p class="tk-saved" id="tkSaved" role="status" aria-live="polite"></p>
+
+        <div class="tk-actions">
+          <button class="tk-btn" id="tkSave" type="button">Save ticket again</button>
+          <button class="tk-btn alt" id="tkChange" type="button">Change name</button>
+          <button class="tk-btn alt" id="tkClose" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
     var ROLL_SECONDS = 5;      // EDIT: how long the build-up lasts (drum roll + music)
@@ -276,6 +435,7 @@
     var BG_VOLUME = 0.6;       // EDIT: background music volume (0 = none, 1 = loud)
     var BG_BPM = 84;           // EDIT: background music speed (higher = faster)
     var CONFETTI_AMOUNT = 1;   // EDIT: 0 = no confetti, 1 = normal, 2 = double
+    var AUTO_DOWNLOAD = true;  // EDIT: true = the ticket downloads by itself when it’s handed over
     var CURTAIN_MS = 1800;     // should match the curtain transition in the CSS
 
     var cover = document.getElementById("cover");
@@ -807,14 +967,297 @@
       updateMusicBtn();
     });
 
+    // ================= YOUR TICKET (after "I’m in") =================
+    var tkOverlay = document.getElementById("tkOverlay");
+    var tkWrap = document.getElementById("tkWrap");
+    var tkAsk = document.getElementById("tkAsk");
+    var tkTicketStep = document.getElementById("tkTicketStep");
+    var tkNameEl = document.getElementById("tkName");
+    var tkNameInput = document.getElementById("tkNameInput");
+    var tkError = document.getElementById("tkError");
+    var tkSaved = document.getElementById("tkSaved");
+    var viewTicketBtn = document.getElementById("viewTicketBtn");
+    var guestName = "Guest";
+    var ticketIssued = false;
+    var tkReturnFocus = null;
+
+    // Splits an element’s text at its <br> tags into separate lines
+    function linesOf(el) {
+      return el.innerHTML.split(/<br\s*\/?>/i).map(function (part) {
+        var d = document.createElement("div");
+        d.innerHTML = part;
+        return d.textContent.trim();
+      }).filter(Boolean);
+    }
+
+    // Everything on the guest’s ticket is copied from the invitation, so editing the page updates the ticket too
+    var tkMovie = document.querySelector(".film strong").textContent.trim();
+    var tkWhen = linesOf(document.getElementById("whenDd"));
+    var tkWhere = linesOf(document.getElementById("whereDd"));
+
+    // A random seat, ticket number, and barcode, made once per visit
+    var tkSeatText = "Row " + "ABCDEFGH".charAt(Math.floor(Math.random() * 8)) + ", Seat " + (1 + Math.floor(Math.random() * 12));
+    var tkNoText = "No. " + String(Math.floor(1000 + Math.random() * 9000));
+    var tkBars = [];
+    (function () {
+      var x = 0;
+      while (x < 196) {
+        var w = 1 + Math.floor(Math.random() * 3);
+        tkBars.push({ x: x, w: w });
+        x += w + 1 + Math.floor(Math.random() * 2);
+      }
+    })();
+
+    function buildTicket() {
+      document.getElementById("tkMovie").textContent = tkMovie;
+      document.getElementById("tkSeat").textContent = tkSeatText;
+      document.getElementById("tkNo").textContent = tkNoText;
+
+      var dl = document.getElementById("tkDetails");
+      dl.textContent = "";
+      [["When", tkWhen], ["Where", tkWhere]].forEach(function (row) {
+        var dt = document.createElement("dt");
+        dt.textContent = row[0];
+        var dd = document.createElement("dd");
+        row[1].forEach(function (line, i) {
+          if (i > 0) { dd.appendChild(document.createElement("br")); }
+          dd.appendChild(document.createTextNode(line));
+        });
+        dl.appendChild(dt);
+        dl.appendChild(dd);
+      });
+
+      var svg = document.getElementById("tkBars");
+      var ns = "http://www.w3.org/2000/svg";
+      tkBars.forEach(function (b) {
+        var r = document.createElementNS(ns, "rect");
+        r.setAttribute("x", b.x);
+        r.setAttribute("y", 0);
+        r.setAttribute("width", b.w);
+        r.setAttribute("height", 50);
+        r.setAttribute("fill", "currentColor");
+        svg.appendChild(r);
+      });
+      svg.style.color = "var(--ink)";
+    }
+
+    // Shows either the name form or the finished ticket
+    function showStep(issued) {
+      tkAsk.hidden = issued;
+      tkTicketStep.hidden = !issued;
+    }
+
+    function openTicket() {
+      tkReturnFocus = document.activeElement;
+      tkOverlay.hidden = false;
+      showStep(ticketIssued);
+      if (ticketIssued) { tkWrap.focus(); } else { tkNameInput.focus(); }
+    }
+    function closeTicket() {
+      tkOverlay.hidden = true;
+      if (tkReturnFocus && tkReturnFocus.focus && !tkReturnFocus.hidden) { tkReturnFocus.focus(); }
+    }
+
+    // Replays the “ticket slides out” animation
+    function printAnimation() {
+      tkTicketStep.classList.remove("print");
+      void tkTicketStep.offsetWidth;
+      tkTicketStep.classList.add("print");
+    }
+
+    // Step 1 -> Step 2: put the name on the ticket, hand it over, and download it
+    tkAsk.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var name = tkNameInput.value.trim();
+      if (!name) {
+        tkError.textContent = "Type your name so it can go on your ticket.";
+        tkNameInput.focus();
+        return;
+      }
+      tkError.textContent = "";
+      guestName = name;
+      tkNameEl.textContent = name;
+      document.getElementById("tkHello").textContent = "Here’s your ticket, " + name + "!";
+      ticketIssued = true;
+      viewTicketBtn.textContent = "View my ticket";
+      tkSaved.textContent = "";
+
+      showStep(true);
+      printAnimation();
+      tkWrap.focus();
+
+      if (AUTO_DOWNLOAD) { setTimeout(saveTicket, 800); }
+    });
+    tkNameInput.addEventListener("input", function () { tkError.textContent = ""; });
+
+    document.getElementById("tkChange").addEventListener("click", function () {
+      ticketIssued = false;
+      showStep(false);
+      tkNameInput.focus();
+      tkNameInput.select();
+    });
+    document.getElementById("tkCancel").addEventListener("click", closeTicket);
+    document.getElementById("tkClose").addEventListener("click", closeTicket);
+    viewTicketBtn.addEventListener("click", openTicket);
+    tkOverlay.addEventListener("click", function (e) { if (e.target === tkOverlay) { closeTicket(); } });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !tkOverlay.hidden) { closeTicket(); }
+    });
+
+    // ---------- Save the ticket as a picture ----------
+    function roundRectPath(c, x, y, w, h, r) {
+      c.beginPath();
+      c.moveTo(x + r, y);
+      c.arcTo(x + w, y, x + w, y + h, r);
+      c.arcTo(x + w, y + h, x, y + h, r);
+      c.arcTo(x, y + h, x, y, r);
+      c.arcTo(x, y, x + w, y, r);
+      c.closePath();
+    }
+    function wrapText(c, text, maxWidth) {
+      var words = text.split(" "), lines = [], line = "";
+      words.forEach(function (word) {
+        var test = line ? line + " " + word : word;
+        if (c.measureText(test).width > maxWidth && line) { lines.push(line); line = word; }
+        else { line = test; }
+      });
+      if (line) { lines.push(line); }
+      return lines;
+    }
+    function fitFont(c, text, weight, family, start, min, maxWidth) {
+      var size = start;
+      while (size > min) {
+        c.font = weight + " " + size + "px " + family;
+        if (c.measureText(text).width <= maxWidth) { break; }
+        size -= 2;
+      }
+      c.font = weight + " " + size + "px " + family;
+    }
+
+    function drawTicketImage() {
+      var W = 720, H = 1060, X = 56, notchY = 730;
+      var canvas = document.createElement("canvas");
+      canvas.width = W; canvas.height = H;
+      var c = canvas.getContext("2d");
+      var css = getComputedStyle(document.documentElement);
+      var paper = css.getPropertyValue("--paper").trim() || "#f4d98c";
+      var ink = css.getPropertyValue("--ink").trim() || "#4a0f18";
+      var accent = css.getPropertyValue("--accent").trim() || "#b3202f";
+      var bulb = css.getPropertyValue("--bulb").trim() || "#fff3c4";
+      var sans = "'DM Sans', system-ui, sans-serif";
+      var display = "'Limelight', Georgia, serif";
+
+      // Ticket shape with the two side notches
+      c.fillStyle = paper;
+      roundRectPath(c, 0, 0, W, H, 36);
+      c.fill();
+      c.globalCompositeOperation = "destination-out";
+      c.beginPath(); c.arc(0, notchY, 30, 0, 6.2832); c.fill();
+      c.beginPath(); c.arc(W, notchY, 30, 0, 6.2832); c.fill();
+      c.globalCompositeOperation = "source-over";
+
+      // Tear line
+      c.strokeStyle = ink; c.globalAlpha = 0.55; c.lineWidth = 4; c.setLineDash([16, 12]);
+      c.beginPath(); c.moveTo(50, notchY); c.lineTo(W - 50, notchY); c.stroke();
+      c.setLineDash([]); c.globalAlpha = 1;
+
+      // Marquee bulbs
+      for (var i = 0; i < 12; i++) {
+        var bx = 64 + i * ((W - 128) / 11);
+        c.fillStyle = accent; c.globalAlpha = 0.3;
+        c.beginPath(); c.arc(bx, 62, 14, 0, 6.2832); c.fill();
+        c.globalAlpha = 1; c.fillStyle = bulb;
+        c.beginPath(); c.arc(bx, 62, 9, 0, 6.2832); c.fill();
+      }
+
+      c.textAlign = "left"; c.textBaseline = "alphabetic";
+
+      c.fillStyle = ink;
+      c.font = "700 30px " + sans;
+      c.fillText("Admit one", X, 150);
+
+      c.fillStyle = accent;
+      fitFont(c, "Movie Night", "400", display, 112, 40, W - X * 2);
+      c.fillText("Movie Night", X, 270);
+
+      c.fillStyle = ink;
+      fitFont(c, guestName, "700", sans, 56, 26, W - X * 2);
+      c.fillText(guestName, X, 372);
+      c.fillRect(X, 388, W - X * 2, 4);
+
+      fitFont(c, tkMovie, "700", sans, 42, 22, W - X * 2);
+      c.fillText(tkMovie, X, 462);
+      c.fillRect(X, 490, W - X * 2, 3);
+
+      // When and where
+      var textX = 190, maxW = W - textX - X, y = 538, lh = 34;
+      c.font = "700 26px " + sans;
+      c.fillText("When", X, y);
+      c.font = "400 26px " + sans;
+      tkWhen.forEach(function (line) { c.fillText(line, textX, y); y += lh; });
+      y += 20;
+      c.font = "700 26px " + sans;
+      c.fillText("Where", X, y);
+      c.font = "400 26px " + sans;
+      var whereLines = [];
+      tkWhere.forEach(function (line) { whereLines = whereLines.concat(wrapText(c, line, maxW)); });
+      whereLines.slice(0, 4).forEach(function (line) { c.fillText(line, textX, y); y += lh; });
+
+      // Stub: seat, number, barcode
+      c.font = "700 46px " + sans;
+      c.fillText(tkSeatText, X, 810);
+      c.font = "500 28px " + sans;
+      c.fillText(tkNoText, X, 856);
+      var scale = (W - X * 2) / 200;
+      tkBars.forEach(function (b) { c.fillRect(X + b.x * scale, 890, b.w * scale, 120); });
+
+      return canvas;
+    }
+
+    function saveTicket() {
+      var fontsReady = (document.fonts && document.fonts.load)
+        ? Promise.all([document.fonts.load("96px Limelight"), document.fonts.load("700 30px 'DM Sans'"), document.fonts.load("400 26px 'DM Sans'")])
+        : Promise.resolve();
+      fontsReady.catch(function () {}).then(function () {
+        try {
+          drawTicketImage().toBlob(function (blob) {
+            if (!blob) { return; }
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "movie-night-ticket.png";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+            tkSaved.textContent = "Your ticket is saving to your device. If nothing happened, tap “Save ticket again.”";
+          }, "image/png");
+        } catch (e) {
+          tkSaved.textContent = "Couldn’t save the picture here. You can still screenshot your ticket.";
+        }
+      });
+    }
+    document.getElementById("tkSave").addEventListener("click", saveTicket);
+
+    buildTicket();
+
     // ---------- RSVP buttons ----------
-    var buttons = document.querySelectorAll(".actions button");
+    var buttons = document.querySelectorAll(".actions button[data-msg]");
     var reply = document.getElementById("reply");
     buttons.forEach(function (btn) {
       btn.addEventListener("click", function () {
         buttons.forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
         btn.setAttribute("aria-pressed", "true");
         reply.textContent = btn.getAttribute("data-msg");
+
+        if (btn.classList.contains("yes")) {
+          // "I’m in" hands you your ticket
+          viewTicketBtn.hidden = false;
+          setTimeout(openTicket, 450);
+        } else {
+          viewTicketBtn.hidden = true;
+          tkOverlay.hidden = true;
+        }
       });
     });
 
